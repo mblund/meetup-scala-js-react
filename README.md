@@ -1,6 +1,8 @@
 # Akka HTTP / Scala.js / React Websocket Trading App
 
-A simple application that uses akka-http backend and a scala.js with japgolly react frontend to implement a simple
+If you are able, please checkout and run this before the meetup. 
+
+A simple application that uses akka-http backend and a scala.js with japgolly's react wrapper frontend to implement a simple
 websocket based chat application.
 
 To run:
@@ -15,25 +17,11 @@ sbt
 Navigate to [http://localhost:8080/](http://localhost:8080/).
 
 
-### Examples
-
-```
-sbt
-
-> frontend/test:fastOptJS
-```
-
-Open file
-[file://frontend/src/test/scala/aReactIntro/example1.html](frontend/src/test/scala/aReactIntro/example1.html)
-directly in a web browser
+During the meetup we will mostly use code from 
+ [https://github.com/japgolly/scalajs-react/blob/master/doc/USAGE.md](https://github.com/japgolly/scalajs-react/blob/master/doc/USAGE.md)
 
 ### Excercies 
 
+//TODO: will be updated before meetup
 
 
-### Documentation
-
-
-### The "frontend"
-
-Write

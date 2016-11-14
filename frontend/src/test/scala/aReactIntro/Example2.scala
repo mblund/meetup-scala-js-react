@@ -16,12 +16,16 @@ object Example2 {
     */
   class Backend(scope: BackendScope[Unit, State]) {
 
-    def onIncreaseClick(e:ReactEvent):Callback = scope.modState(state => state+1)
+    def onIncreaseClick(e:ReactEvent):Callback =
+      scope.modState(state => state+1)
 
-    def render(state: State) =   // ← Accept props, state and/or propsChildren as argument
+    def render(state: State) = // ← Accept props, state and/or propsChildren as argument
       div(
         h2(s"Counter $state"),
-        button(cls:="btn btn-primary", onClick ==> onIncreaseClick )("Click to increase counter")
+        button(
+          cls:="btn btn-primary",
+          onClick ==> onIncreaseClick )
+        ("Click to increase counter")
       )
   }
 
