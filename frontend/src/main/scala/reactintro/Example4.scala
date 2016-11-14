@@ -1,16 +1,15 @@
-package components.bootstrap4.table
+package reactintro
 
 import components.bootstrap4.Table._
-import japgolly.scalajs.react.{BackendScope, Callback, ReactComponentB, ReactDOM}
 import japgolly.scalajs.react.vdom.all._
-import japgolly.scalajs.react.ReactEvent
+import japgolly.scalajs.react.{BackendScope, Callback, ReactComponentB, ReactDOM, ReactEvent}
 import org.scalajs.dom._
 
 import scala.scalajs.js.annotation.JSExport
 import scala.util.Random
 
 @JSExport
-object Example2 {
+object Example4 {
 
     case class RowData(index:Int, name:String,price:Int)
     val random = Random
@@ -46,7 +45,6 @@ object Example2 {
 
     /**
       *  See https://github.com/japgolly/scalajs-react/blob/master/doc/USAGE.md#backends
-      *
      */
     val component = ReactComponentB[Unit]("SortedTableExample")
       .initialState(exampleRows)

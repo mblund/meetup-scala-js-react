@@ -1,4 +1,4 @@
-package aReactIntro
+package reactintro
 
 import japgolly.scalajs.react.{ReactComponentB, ReactDOM}
 import japgolly.scalajs.react.vdom.all._

@@ -1,14 +1,14 @@
-package components.bootstrap4.table
+package reactintro
 
+import components.bootstrap4.Table._
 import japgolly.scalajs.react.ReactDOM
 import japgolly.scalajs.react.vdom.all._
-import components.bootstrap4.Table._
 import org.scalajs.dom._
 
 import scala.scalajs.js.annotation.JSExport
 
 @JSExport
-object Example1 {
+object Example3 {
 
     val headers = List(
       Header(HeaderProps("Name")),

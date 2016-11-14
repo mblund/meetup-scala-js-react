@@ -1,4 +1,4 @@
-package aReactIntro
+package reactintro
 
 import japgolly.scalajs.react.vdom.all._
 import japgolly.scalajs.react.{BackendScope, Callback, ReactComponentB, ReactDOM, ReactEvent}
@@ -7,36 +7,36 @@ import org.scalajs.dom._
 import scala.scalajs.js.annotation.JSExport
 
 @JSExport
-object Example2 {
+object Exercise1 {
 
-  type State = Int
-
+  type State = Boolean
   /**
-    * https://github.com/japgolly/scalajs-react/blob/master/doc/USAGE.md#backends
+    * https://github.com/japgolly/scalajs-react/blob/master/doc/USAGE.md#callbacks
     */
   class Backend(scope: BackendScope[Unit, State]) {
 
-    def onIncreaseClick(e:ReactEvent):Callback =
-      scope.modState(state => state+1)
-
     def render(state: State) = // ← Accept props, state and/or propsChildren as argument
       div(
-        h2(s"Counter $state"),
         button(
-          cls:="btn btn-primary",
-          onClick ==> onIncreaseClick )
-        ("Click to increase counter")
+          classSet(
+            "btn" -> true,
+            "btn-primary" -> true,
+            "active" -> false
+          )
+        )
+        ("Off")
       )
   }
 
-  val StateExample = ReactComponentB[Unit]("StateExample")
-    .initialState(0)
+  val ToogleButton = ReactComponentB[Unit]("ToogleButton")
+    .initialState(false)
     .renderBackend[Backend]  // ← Use Backend class and backend.render
     .build
 
   val markup =
       div(
-        StateExample()
+        h3("This should be a toogle button:"),
+        ToogleButton()
       )
 
   ReactDOM.render(

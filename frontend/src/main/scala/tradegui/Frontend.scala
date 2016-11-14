@@ -37,7 +37,7 @@ object Frontend extends js.JSApp {
     }
 
     webSocket.onerror = { (event: ErrorEvent) ⇒
-      println(s"Failed: code: ${event.colno}")
+      println(s"Failed with code: ${event.colno}")
     }
 
     webSocket.onmessage = { (event: MessageEvent) ⇒

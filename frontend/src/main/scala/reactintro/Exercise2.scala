@@ -1,29 +1,25 @@
-package components.bootstrap4.table
+package reactintro
 
+import components.bootstrap4.Table._
+import japgolly.scalajs.react.extra.LogLifecycle
 import japgolly.scalajs.react.vdom.all._
 import japgolly.scalajs.react.{BackendScope, Callback, ReactComponentB, ReactDOM, ReactEventI}
 import org.scalajs.dom._
-import components.bootstrap4.Table._
-import japgolly.scalajs.react.extra.LogLifecycle
 
 import scala.scalajs.js.annotation.JSExport
 import scala.util.Random
 
 @JSExport
-object Example3 {
-
-    case class RowData(index:Int, name:String,price:Int)
-    val random = Random
-    val exampleRows:State = exampledata.Crops.set.zipWithIndex.map{ case (cropName,index)=>
-        RowData(index = index, name = cropName, price = random.nextInt(100))
-    }.toList
+object Exercise2 {
 
     type Props = List[RowData]
     type State = List[RowData]
 
     class Backend(scope: BackendScope[Props, State]) {
 
-      def onInputChange(props:Props)(e:ReactEventI) : Callback = Callback.warn("Not implemented") //TODO: Time to filter the table
+      def onInputChange(props:Props)(e:ReactEventI) : Callback =
+        Callback.warn("Not implemented")
+       //TODO: Time to filter the table
 
       val headers = List(
         Header.withKey(1)(HeaderProps("Name")),
@@ -63,14 +59,28 @@ object Example3 {
         )
     }
 
-    val component = ReactComponentB[List[RowData]]("SortedTableExample")
+    val component = ReactComponentB[Props]("SortedTableExample")
       .initialState_P(props=>props)
-      .renderBackend[Backend]  // ← Use Backend class above and backend.render
+      .renderBackend[Backend]
       .configure(LogLifecycle.short)
       .build
+
+    val exampleRows:State = RowData.createExampleRows
 
     ReactDOM.render(
       component(exampleRows),
       document.getElementById("app")
     )
+}
+
+case class RowData(index:Int, name:String,price:Int)
+
+object RowData {
+  val random = Random
+
+  def createExampleRows: List[RowData] = {
+    exampledata.Crops.set.zipWithIndex.map { case (cropName, index) =>
+      RowData(index = index, name = cropName, price = random.nextInt(100))
+    }.toList
+  }
 }
