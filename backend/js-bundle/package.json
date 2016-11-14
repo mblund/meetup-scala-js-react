@@ -1,0 +1,18 @@
+{
+  "name": "static",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:sciabarra/jgh.git"
+  },
+  "dependencies": {
+    "bootstrap": "^4.0.0-alpha.5",
+    "browserify": "13.0.0",
+    "react": "^15.3.2",
+    "react-addons-css-transition-group": "^15.3.2",
+    "react-addons-transition-group": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-visibility-sensor": "^3.4.0",
+    "reactstrap": "^3.8.1"
+  }
+}

@@ -1,0 +1,12 @@
+<h1></h1>
+<script src="../src/main/resources/bundle.js"></script>
+<script>
+var $ = Bundle.jquery
+var _ = Bundle.lodash
+console.log($)
+console.log(_)
+var Alert = Bundle.ReactBootstrap.Alert
+
+
+$("h1").text(_.camelCase("Hello, world."))
+</script>
