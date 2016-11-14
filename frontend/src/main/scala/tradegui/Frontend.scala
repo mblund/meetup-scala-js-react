@@ -13,7 +13,7 @@ object Frontend extends js.JSApp {
 
   def main(): Unit = {
     println("Started")
-    //TODO: Create a join/disconnect button
+    //TODO: Create a join/disconnect button and a user name input field
     signin("James Smith")
   }
 
@@ -76,13 +76,6 @@ object Frontend extends js.JSApp {
 
   def getWebsocketUri(document: Document, nameOfUser: String): String = {
     val wsProtocol = if (dom.document.location.protocol == "https:") "wss" else "ws"
-
     s"$wsProtocol://${dom.document.location.host}/message-channel?name=$nameOfUser"
-  }
-
-  def p(msg: String) = {
-    val paragraph = dom.document.createElement("p")
-    paragraph.innerHTML = msg
-    paragraph
   }
 }
