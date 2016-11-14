@@ -3,7 +3,7 @@
 If you are able, please checkout and run this before the meetup. 
 
 A simple application that uses akka-http backend and a scala.js with japgolly's react wrapper frontend to implement a simple
-websocket based chat application.
+websocket based application.
 
 To run:
 
