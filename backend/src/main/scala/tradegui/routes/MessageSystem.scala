@@ -16,7 +16,7 @@ import upickle.default
   */
 
 trait MessageSystem {
-  def chatFlow(sender: String): Flow[String, Protocol.ServerToClient, Any]
+  def messageFlow(sender: String): Flow[String, Protocol.ServerToClient, Any]
   def injectMessage(message: Protocol.ServerToClient): Unit
 }
 
@@ -26,25 +26,25 @@ class WebSocketMessageSystem(val tradeSystemActor:ActorRef) extends MessageSyste
     get{
       path("message-channel") {
         parameter('name) { name ⇒
-          handleWebSocketMessages(webSocketChatFlow(sender = name))
+          handleWebSocketMessages(webSocketMessageFlow(sender = name))
         }
       }
     }
 
-  // Wraps the chatActor in a sink. When the stream to this sink will be completed
-    // it sends the `ParticipantLeft` message to the chatActor.
-    // FIXME: here some rate-limiting should be applied to prevent single users flooding the chat
-    def chatInSink(sender: String) = Sink.actorRef[TradeSystemEvent](tradeSystemActor, UserLeft(sender))
+  // Wraps the messageActor in a sink. When the stream to this sink will be completed
+
+    // FIXME: here some rate-limiting should be applied to prevent single users flooding the application
+    def messageInSink(sender: String) = Sink.actorRef[TradeSystemEvent](tradeSystemActor, UserLeft(sender))
 
 
-    def chatFlow(sender: String): Flow[String, Protocol.ServerToClient, Any] = {
+    def messageFlow(sender: String): Flow[String, Protocol.ServerToClient, Any] = {
       val in =
         Flow[String]
           .map(ReceivedMessage(sender, _))
-          .to(chatInSink(sender))
+          .to(messageInSink(sender))
 
       // The counter-part which is a source that will create a target ActorRef per
-      // materialization where the chatActor will send its messages to.
+      // materialization where the messageActor will send its messages to.
       // This source will only buffer one element and will fail if the client doesn't read
       // messages fast enough.
       val out =
@@ -57,15 +57,14 @@ class WebSocketMessageSystem(val tradeSystemActor:ActorRef) extends MessageSyste
     def injectMessage(message: Protocol.ServerToClient): Unit = tradeSystemActor ! message // non-streams interface
 
 
-  def webSocketChatFlow(sender:String): Flow[Message, Message, Any] =
+  def webSocketMessageFlow(sender:String): Flow[Message, Message, Any] =
     Flow[Message]
       .collect {
         case TextMessage.Strict(msg) ⇒ msg // unpack incoming WS text messages...
-        // This will lose (ignore) messages not received in one chunk (which is
-        // unlikely because chat messages are small) but absolutely possible
+        // This will lose (ignore) messages not received in one chunk
         // FIXME: We need to handle TextMessage.Streamed as well.
       }
-      .via(chatFlow(sender)) // ... and route them through the chatFlow ...
+      .via(messageFlow(sender)) // ... and route them through the messageFlow ...
       .map {
       case msg: Protocol.ServerToClient ⇒
         TextMessage.Strict(default.write(msg)) // ... pack outgoing messages into WS JSON messages ...

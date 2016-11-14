@@ -14,11 +14,11 @@ object Frontend extends js.JSApp {
   def main(): Unit = {
     println("Started")
     //TODO: Create a join/disconnect button
-    joinChat("James Smith")
+    signin("James Smith")
   }
 
-  def joinChat(name: String): Unit = {
-    println( s"Trying to join chat as '$name'...")
+  def signin(name: String): Unit = {
+    println( s"Trying to signin as '$name'...")
     val webSocket = new WebSocket(getWebsocketUri(dom.document, name))
 
     val cropsOverview = ReactDOM.render(
@@ -32,7 +32,7 @@ object Frontend extends js.JSApp {
     )
 
     webSocket.onopen = { (event: Event) ⇒
-      println("Chat connection was successful!")
+      println("Connection was successful!")
       event
     }
 
@@ -70,14 +70,14 @@ object Frontend extends js.JSApp {
     }
 
     webSocket.onclose = { (event: Event) ⇒
-      println("Connection to chat lost. You can try to rejoin manually.")
+      println("Connection to server lost. You can try to rejoin manually.")
     }
   }
 
-  def getWebsocketUri(document: Document, nameOfChatParticipant: String): String = {
+  def getWebsocketUri(document: Document, nameOfUser: String): String = {
     val wsProtocol = if (dom.document.location.protocol == "https:") "wss" else "ws"
 
-    s"$wsProtocol://${dom.document.location.host}/message-channel?name=$nameOfChatParticipant"
+    s"$wsProtocol://${dom.document.location.host}/message-channel?name=$nameOfUser"
   }
 
   def p(msg: String) = {
