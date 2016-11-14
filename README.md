@@ -1,4 +1,4 @@
-# Akka HTTP / Scala.js / React Websocket Trading App
+# Akka HTTP / Scala.js / React Trading App
 
 If you are able, please checkout and run this before the meetup. 
 
