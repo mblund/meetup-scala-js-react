@@ -20,8 +20,5 @@ Navigate to [http://localhost:8080/](http://localhost:8080/).
 During the meetup we will mostly use code from 
  [https://github.com/japgolly/scalajs-react/blob/master/doc/USAGE.md](https://github.com/japgolly/scalajs-react/blob/master/doc/USAGE.md)
 
-### Excercies 
-
-//TODO: will be updated before meetup
 
 
