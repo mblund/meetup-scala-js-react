@@ -4,8 +4,8 @@ import akka.actor.{Actor, ActorRef, Status, Terminated}
 import akka.actor._
 import shared.Model.{Crop, Order, Registered}
 import shared.{Model, Protocol}
-import shared.Protocol.ServerToClient
-import upickle.default
+import shared.Protocol.{ClientToServer, ServerToClient}
+
 import scala.concurrent.duration._
 import scala.util.Random
 
@@ -13,7 +13,7 @@ import scala.util.Random
 sealed trait TradeSystemEvent
 case class NewUser(name: String, subscriber: ActorRef) extends TradeSystemEvent
 case class UserLeft(name: String) extends TradeSystemEvent
-case class ReceivedMessage(sender: String, message: String) extends TradeSystemEvent
+case class ReceivedMessage(sender: String, message: ClientToServer) extends TradeSystemEvent
 case object TimeToUpdatePrices extends TradeSystemEvent
 
 class BackendActor extends Actor {
@@ -55,12 +55,10 @@ class BackendActor extends Actor {
       crops = newCrops
       dispatchToAll(ServerToClient.NewPrices(newPrices))
 
-    case msg: ReceivedMessage ⇒
-      val protocolMessage = default.read[Protocol.ClientToServer](msg.message)
-
-      protocolMessage match {
+    case ReceivedMessage(sender, msg) ⇒
+      msg match {
         case Protocol.ClientToServer.PlaceBuyOrder(cropId,price) ⇒
-          println(s"${msg.sender} said: buy crop id:$cropId for price $price")
+          println(s"${sender} said: buy crop id:$cropId for price $price")
 
           crops.find(c=>c.id==cropId) match {
             case None =>
@@ -68,7 +66,7 @@ class BackendActor extends Actor {
             case Some(crop) =>
               if (price != crop.price)
                 println("Warning, current price and buyOrder doesn't match")
-              val newOrder = Order(orders.size, cropId, crop.name, price, msg.sender, Registered)
+              val newOrder = Order(orders.size, cropId, crop.name, price, sender, Registered)
               orders = orders + newOrder
               dispatchToAll(ServerToClient.NewOrder(newOrder))
           }
