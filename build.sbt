@@ -1,5 +1,3 @@
-import sbt.Def
-
 scalaVersion in ThisBuild := "2.11.8"
 
 val akkaV = "2.4.2"
