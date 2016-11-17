@@ -35,10 +35,13 @@ lazy val backend = project
       "org.specs2" %% "specs2" % "2.3.12" % "test",
       "com.lihaoyi" %% "upickle" % upickleV
     ),
-    (resourceGenerators in Compile) <+=
-      (fastOptJS in Compile in frontend,
-       packageScalaJSLauncher in Compile in frontend).map((f1, f2) =>
-        Seq(f1.data, f2.data)),
+    (resourceGenerators in Compile) += Def.task {
+      val fastOptAttrFile = (fastOptJS in Compile in frontend).value
+      val fastOptFile = fastOptAttrFile.data // the .js file
+      val fastOptSourceMapFile = fastOptAttrFile.get(scalaJSSourceMap).get
+      val launcher = (packageScalaJSLauncher in Compile in frontend).value
+      Seq(fastOptFile.asFile, fastOptSourceMapFile.asFile, launcher.data.asFile)
+    }.taskValue,
     watchSources ++= (watchSources in frontend).value
   )
   .dependsOn(sharedJvm)
